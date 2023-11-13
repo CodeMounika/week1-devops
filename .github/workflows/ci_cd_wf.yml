@@ -34,3 +34,12 @@ jobs:
         with:
             pytest-coverage-path: ./pytest-coverage.txt
             junitxml-path: ./pytest.xml
+      - name: Run unit tests (pytest)
+        run: |
+              docker run -v /tmp:/tmp $IMAGE_TAG python3 -m pytest --cov-report=term-missing:skip-covered --junitxml=/tmp/pytest.xml --cov=src tests/ | tee /tmp/pytest-coverage.txt
+          
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+              pytest-coverage-path: /tmp/pytest-coverage.txt
+              junitxml-path: /tmp/pytest.xml            
